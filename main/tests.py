@@ -1,3 +1,8 @@
 from django.test import TestCase
 
-# Create your tests here.
+
+class BasicTests(TestCase):
+    def test_example(self):
+        rez = 2 + 2
+
+        self.assertEqual(rez, 4)
