@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Paslaugos{% endblock %}
+{% block content %}
+  <div class="app-page-header">
+    {% include "partials/page_title.html" with title="Paslaugos" %}
+    <div class="app-page-header__actions">
+      <a href="{% url 'services:service_create' %}" class="cds--btn cds--btn--primary">Nauja paslauga</a>
+    </div>
+  </div>
+  <div class="cds--data-table-container app-table">
+    <table class="cds--data-table cds--data-table--lg">
+      <thead>
+        <tr>
+          <th><div class="cds--table-header-label">Pavadinimas</div></th>
+          <th><div class="cds--table-header-label">Kaina</div></th>
+          <th><div class="cds--table-header-label">Trukmė</div></th>
+          <th><div class="cds--table-header-label">Kvalifikacija</div></th>
+          <th><span class="cds--visually-hidden">Veiksmai</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in services %}
+          <tr>
+            <td>{{ s.pavadinimas }}</td>
+            <td>{{ s.kaina }} €</td>
+            <td>{{ s.trukme_valandomis }} val.</td>
+            <td>{{ s.reikalinga_kvalifikacija|default:"—" }}</td>
+            <td class="app-table__action"><a href="{% url 'services:service_detail' s.pk %}" class="cds--link">Peržiūrėti</a></td>
+          </tr>
+        {% empty %}
+          {% include "partials/table_empty.html" with colspan=5 %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

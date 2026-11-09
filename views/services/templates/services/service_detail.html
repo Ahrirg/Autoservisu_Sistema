@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}{{ service }}{% endblock %}
+{% block content %}
+  <div class="app-page-header">
+    {% url 'services:service_list' as back %}{% include "partials/page_title.html" with title=service back_url=back back_label="Paslaugos" %}
+    <div class="app-page-header__actions">
+      <!-- full implementation goes here: soft-delete Paslauga (keep history on old orders) -->
+      <button type="button" class="cds--btn cds--btn--danger--tertiary" data-not-implemented="Paslaugos šalinimas">Šalinti</button>
+      <a href="{% url 'services:service_edit' service.pk %}" class="cds--btn cds--btn--primary">Redaguoti</a>
+    </div>
+  </div>
+  <div class="app-panel">
+    <dl class="app-fields app-fields--3">
+      {% include "partials/field.html" with label="Kaina (€)" value=service.kaina %}
+      {% include "partials/field.html" with label="Trukmė (val.)" value=service.trukme_valandomis %}
+      {% include "partials/field.html" with label="Reikalinga kvalifikacija" value=service.reikalinga_kvalifikacija %}
+      {% include "partials/field.html" with label="Aprašymas" value=service.aprasymas wide=True %}
+    </dl>
+  </div>
+{% endblock %}

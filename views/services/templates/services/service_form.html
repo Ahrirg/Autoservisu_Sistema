@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}{% if service %}Redaguoti paslaugą{% else %}Nauja paslauga{% endif %}{% endblock %}
+{% block content %}
+  <div class="app-page-header">
+    {% if service %}
+      {% url 'services:service_detail' service.pk as back %}{% include "partials/page_title.html" with title="Redaguoti paslaugą" subtitle=service back_url=back back_label="Paslauga" %}
+    {% else %}
+      {% url 'services:service_list' as back %}{% include "partials/page_title.html" with title="Nauja paslauga" back_url=back back_label="Paslaugos" %}
+    {% endif %}
+  </div>
+  <!-- full implementation goes here: POST validates PaslaugaForm and saves -->
+  {% if service %}{% url 'services:service_detail' service.pk as cancel %}{% else %}{% url 'services:service_list' as cancel %}{% endif %}
+  {% include "partials/form_card.html" with cancel_url=cancel %}
+{% endblock %}
