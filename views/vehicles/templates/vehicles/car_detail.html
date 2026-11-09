@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}{{ car }}{% endblock %}
+{% block content %}
+  <div class="app-page-header">
+    {% url 'vehicles:car_list' as back %}{% include "partials/page_title.html" with title=car subtitle=car.vin back_url=back back_label="Automobiliai" %}
+    {% if is_klientas %}
+      <div class="app-page-header__actions">
+        <a href="{% url 'vehicles:visit_create' %}?automobilis={{ car.pk }}" class="cds--btn cds--btn--primary">Registruoti vizitą</a>
+      </div>
+    {% endif %}
+  </div>
+  <div class="app-split">
+    <div class="app-panel">
+      <dl class="app-fields">
+        {% include "partials/field.html" with label="Markė" value=car.marke %}
+        {% include "partials/field.html" with label="Modelis" value=car.modelis %}
+        {% include "partials/field.html" with label="Valstybinis Nr." value=car.valstybinis_nr %}
+        {% include "partials/field.html" with label="VIN" value=car.vin %}
+        {% include "partials/field.html" with label="Pagaminimo metai" value=car.pagaminimo_metai %}
+        {% include "partials/field.html" with label="Rida (km)" value=car.rida %}
+        {% include "partials/field.html" with label="Kuro tipas" value=car.get_kuro_tipas_display %}
+        {% include "partials/field.html" with label="Savininkas" value=car.savininkas %}
+      </dl>
+    </div>
+    <div class="app-panel">
+      <h2 class="app-panel__title">VIN patikra</h2>
+      {% if car.vin_patikrintas %}{% include "partials/status_tag.html" with value="patvirtintas" text="Patikrintas" %}{% else %}{% include "partials/status_tag.html" with value="neapmoketa" text="Nepatikrintas" %}{% endif %}
+      <div class="app-panel__actions">
+        <!-- full implementation goes here: call VIN external system and update vin_patikrintas -->
+        <button type="button" class="cds--btn cds--btn--tertiary" data-not-implemented="VIN patikra išorinėje sistemoje">Tikrinti VIN</button>
+      </div>
+    </div>
+  </div>
+{% endblock %}

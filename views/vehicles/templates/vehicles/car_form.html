@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Naujas automobilis{% endblock %}
+{% block content %}
+  <div class="app-page-header">
+    {% url 'vehicles:car_list' as back %}{% include "partials/page_title.html" with title="Naujas automobilis" back_url=back back_label="Automobiliai" %}
+  </div>
+  <!-- full implementation goes here: POST validates AutomobilisForm, checks VIN via external VIN system API, saves -->
+  {% url 'vehicles:car_list' as cancel %}{% include "partials/form_card.html" with cancel_url=cancel extra_feature="Patikrinti VIN" %}
+{% endblock %}

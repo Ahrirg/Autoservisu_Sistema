@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}{{ visit }}{% endblock %}
+{% block content %}
+  <div class="app-page-header">
+    {% url 'vehicles:visit_list' as back %}{% include "partials/page_title.html" with title=visit back_url=back back_label="Vizitai" %}
+    <div class="app-page-header__actions">
+      <!-- full implementation goes here: POST sets busena=ATSAUKTAS -->
+      <button type="button" class="cds--btn cds--btn--danger--tertiary" data-not-implemented="Vizito atšaukimas">Atšaukti vizitą</button>
+      {% if is_vadybininkas %}<a href="{% url 'orders:order_create' %}?vizitas={{ visit.pk }}" class="cds--btn cds--btn--secondary">Sukurti užsakymą</a>{% endif %}
+      <a href="{% url 'vehicles:visit_edit' visit.pk %}" class="cds--btn cds--btn--primary">Redaguoti</a>
+    </div>
+  </div>
+  <div class="app-panel">
+    <dl class="app-fields app-fields--3">
+      {% include "partials/field.html" with label="Data" value=visit.data|date:"Y-m-d" %}
+      {% include "partials/field.html" with label="Laikas" value=visit.laikas|time:"H:i" %}
+      <div class="app-field"><dt class="app-field__label">Būsena</dt><dd class="app-field__value">{% include "partials/status_tag.html" with value=visit.busena text=visit.get_busena_display %}</dd></div>
+      <div class="app-field"><dt class="app-field__label">Automobilis</dt><dd class="app-field__value"><a href="{% url 'vehicles:car_detail' visit.automobilis.pk %}" class="cds--link">{{ visit.automobilis }}</a></dd></div>
+      {% include "partials/field.html" with label="Klientas" value=visit.klientas %}
+      {% include "partials/field.html" with label="Sukurta" value=visit.sukurimo_data|date:"Y-m-d H:i" %}
+      {% include "partials/field.html" with label="Problemos aprašymas" value=visit.problemos_aprasymas wide=True %}
+    </dl>
+  </div>
+{% endblock %}

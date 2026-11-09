@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Automobiliai{% endblock %}
+{% block content %}
+  <div class="app-page-header">
+    {% include "partials/page_title.html" with title="Automobiliai" %}
+    {% if is_klientas %}
+      <div class="app-page-header__actions">
+        <a href="{% url 'vehicles:car_create' %}" class="cds--btn cds--btn--primary">Pridėti automobilį</a>
+      </div>
+    {% endif %}
+  </div>
+  <div class="cds--data-table-container app-table">
+    <table class="cds--data-table cds--data-table--lg">
+      <thead>
+        <tr>
+          <th><div class="cds--table-header-label">Automobilis</div></th>
+          <th><div class="cds--table-header-label">Valst. Nr.</div></th>
+          <th><div class="cds--table-header-label">VIN</div></th>
+          <th><div class="cds--table-header-label">Metai</div></th>
+          {% if is_vadybininkas %}<th><div class="cds--table-header-label">Savininkas</div></th>{% endif %}
+          <th><span class="cds--visually-hidden">Veiksmai</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for car in cars %}
+          <tr>
+            <td>{{ car.marke }} {{ car.modelis }}</td>
+            <td>{{ car.valstybinis_nr }}</td>
+            <td class="app-mono">{{ car.vin }}</td>
+            <td>{{ car.pagaminimo_metai }}</td>
+            {% if is_vadybininkas %}<td>{{ car.savininkas }}</td>{% endif %}
+            <td class="app-table__action"><a href="{% url 'vehicles:car_detail' car.pk %}" class="cds--link">Peržiūrėti</a></td>
+          </tr>
+        {% empty %}
+          {% include "partials/table_empty.html" with colspan=6 text="Automobilių dar nėra." %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

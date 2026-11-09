@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}{% if visit %}Redaguoti vizitą{% else %}Registruoti vizitą{% endif %}{% endblock %}
+{% block content %}
+  <div class="app-page-header">
+    {% if visit %}
+      {% url 'vehicles:visit_detail' visit.pk as back %}{% include "partials/page_title.html" with title="Redaguoti vizitą" subtitle=visit back_url=back back_label="Vizitas" %}
+    {% else %}
+      {% url 'vehicles:visit_list' as back %}{% include "partials/page_title.html" with title="Registruoti vizitą" back_url=back back_label="Vizitai" %}
+    {% endif %}
+  </div>
+  <!-- full implementation goes here: POST validates VizitasForm, checks free time slot, saves, sends confirmation e-mail -->
+  {% if visit %}{% url 'vehicles:visit_detail' visit.pk as cancel %}{% else %}{% url 'vehicles:visit_list' as cancel %}{% endif %}
+  {% include "partials/form_card.html" with cancel_url=cancel submit_label=visit|yesno:"Išsaugoti,Registruoti" %}
+{% endblock %}

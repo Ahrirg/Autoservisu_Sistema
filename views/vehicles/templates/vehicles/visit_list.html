@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Vizitai{% endblock %}
+{% block content %}
+  <div class="app-page-header">
+    {% include "partials/page_title.html" with title="Vizitai" %}
+    <div class="app-page-header__actions">
+      <a href="{% url 'vehicles:visit_create' %}" class="cds--btn cds--btn--primary">Registruoti vizitą</a>
+    </div>
+  </div>
+  <div class="cds--data-table-container app-table">
+    <table class="cds--data-table cds--data-table--lg">
+      <thead>
+        <tr>
+          <th><div class="cds--table-header-label">Data</div></th>
+          <th><div class="cds--table-header-label">Laikas</div></th>
+          <th><div class="cds--table-header-label">Automobilis</div></th>
+          {% if is_vadybininkas %}<th><div class="cds--table-header-label">Klientas</div></th>{% endif %}
+          <th><div class="cds--table-header-label">Būsena</div></th>
+          <th><span class="cds--visually-hidden">Veiksmai</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for v in visits %}
+          <tr>
+            <td>{{ v.data|date:"Y-m-d" }}</td>
+            <td>{{ v.laikas|time:"H:i" }}</td>
+            <td>{{ v.automobilis }}</td>
+            {% if is_vadybininkas %}<td>{{ v.klientas }}</td>{% endif %}
+            <td>{% include "partials/status_tag.html" with value=v.busena text=v.get_busena_display %}</td>
+            <td class="app-table__action"><a href="{% url 'vehicles:visit_detail' v.pk %}" class="cds--link">Peržiūrėti</a></td>
+          </tr>
+        {% empty %}
+          {% include "partials/table_empty.html" with colspan=6 text="Vizitų nėra." %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

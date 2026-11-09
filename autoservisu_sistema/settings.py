@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "theme",
     # Project apps
     "views.main.apps.MainConfig",
+    "views.vehicles.apps.VehiclesConfig",
     "views.services.apps.ServicesConfig",
     "views.orders.apps.OrdersConfig",
     "views.inventory.apps.InventoryConfig",
