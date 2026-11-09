@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}{{ order }}{% endblock %}
+{% block content %}
+  <div class="app-page-header">
+    {% url 'orders:order_list' as back %}{% include "partials/page_title.html" with title=order subtitle=order.automobilis back_url=back back_label="Užsakymai" %}
+    <div class="app-page-header__actions">
+      {% if is_vadybininkas %}
+        <a href="{% url 'orders:assign_master' order.pk %}" class="cds--btn cds--btn--tertiary">Priskirti meistrą</a>
+        {% if order.saskaita %}
+          <a href="{% url 'billing:invoice_detail' order.saskaita.pk %}" class="cds--btn cds--btn--secondary">Sąskaita {{ order.saskaita }}</a>
+        {% else %}
+          <a href="{% url 'billing:invoice_create' %}?uzsakymas={{ order.pk }}" class="cds--btn cds--btn--secondary">Išrašyti sąskaitą</a>
+        {% endif %}
+      {% endif %}
+      <a href="{% url 'orders:order_edit' order.pk %}" class="cds--btn cds--btn--primary">Redaguoti</a>
+    </div>
+  </div>
+
+  <div class="app-split">
+    <div class="app-stack">
+      <div class="app-panel">
+        <dl class="app-fields">
+          <div class="app-field"><dt class="app-field__label">Būsena</dt><dd class="app-field__value">{% include "partials/status_tag.html" with value=order.busena text=order.get_busena_display %}</dd></div>
+          {% include "partials/field.html" with label="Bendra kaina (€)" value=order.bendra_kaina %}
+          {% include "partials/field.html" with label="Sukurta" value=order.sukurimo_data|date:"Y-m-d H:i" %}
+          {% include "partials/field.html" with label="Planuojama pabaiga" value=order.planuojama_pabaigos_data|date:"Y-m-d" %}
+          {% include "partials/field.html" with label="Meistras" value=order.meistras %}
+          {% include "partials/field.html" with label="Vadybininkas" value=order.vadybininkas %}
+          {% if order.vizitas and is_vadybininkas %}
+            <div class="app-field"><dt class="app-field__label">Vizitas</dt><dd class="app-field__value"><a href="{% url 'vehicles:visit_detail' order.vizitas.pk %}" class="cds--link">{{ order.vizitas }}</a></dd></div>
+          {% endif %}
+          {% include "partials/field.html" with label="Pastaba" value=order.pastaba wide=True %}
+        </dl>
+      </div>
+
+      <div class="app-panel">
+        <h2 class="app-panel__title">Paslaugos</h2>
+        <ul class="app-list">
+          {% for p in order.paslaugos.all %}
+            <li class="app-list__item"><span>{{ p.pavadinimas }}</span><span class="app-list__meta">{{ p.kaina }} €</span></li>
+          {% empty %}
+            <li class="app-list__item app-list__meta">Paslaugų nepridėta.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="app-panel">
+      <h2 class="app-panel__title">Naudotos dalys</h2>
+      <p class="app-text-secondary">Dalių nepridėta.</p>
+      <div class="app-panel__actions">
+        <!-- full implementation goes here: UzsakymoDalis model, pick Dalis + kiekis, decrease likutis, recompute bendra_kaina -->
+        <button type="button" class="cds--btn cds--btn--tertiary" data-not-implemented="Dalių pridėjimas prie užsakymo">Pridėti dalį</button>
+        {% if is_meistras %}
+          <!-- full implementation goes here: e-mail client that the order is done (El. pašto sąsaja) -->
+          <button type="button" class="cds--btn cds--btn--secondary" data-not-implemented="Kliento informavimas el. paštu">Informuoti klientą</button>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

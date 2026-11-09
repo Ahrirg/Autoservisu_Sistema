@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Priskirti meistrą{% endblock %}
+{% block content %}
+  <div class="app-page-header">
+    {% url 'orders:order_detail' order.pk as back %}{% include "partials/page_title.html" with title="Laisvi meistrai" subtitle=order back_url=back back_label="Užsakymas" %}
+  </div>
+  <!-- full implementation goes here: POST assigns selected Meistras, validates max_uzsakymu_skaicius & kvalifikacija -->
+  <form method="post" class="app-form">
+    {% csrf_token %}
+    <div class="app-form__body app-form__body--single">
+      <fieldset class="cds--fieldset">
+        <legend class="cds--label">Meistras</legend>
+        <div class="cds--radio-button-group cds--radio-button-group--vertical">
+          {% for m in masters %}
+            <div class="cds--radio-button-wrapper">
+              <input type="radio" class="cds--radio-button" id="meistras-{{ m.pk }}" name="meistras" value="{{ m.pk }}"{% if order.meistras_id == m.pk %} checked{% endif %}>
+              <label for="meistras-{{ m.pk }}" class="cds--radio-button__label">
+                <span class="cds--radio-button__appearance"></span>
+                <span class="cds--radio-button__label-text">{{ m }} · {{ m.kvalifikacija }} · {{ m.darbo_stazas }} m. · {{ m.valandinis_ikainis }} €/val.</span>
+              </label>
+            </div>
+          {% empty %}
+            <p class="app-text-secondary">Šiuo metu laisvų meistrų nėra.</p>
+          {% endfor %}
+        </div>
+      </fieldset>
+    </div>
+    <div class="app-form__footer">
+      <a href="{% url 'orders:order_detail' order.pk %}" class="cds--btn cds--btn--secondary">Atšaukti</a>
+      <button type="submit" class="cds--btn cds--btn--primary">Priskirti</button>
+    </div>
+  </form>
+{% endblock %}

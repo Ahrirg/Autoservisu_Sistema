@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Užsakymai{% endblock %}
+{% block content %}
+  <div class="app-page-header">
+    {% if is_meistras %}{% include "partials/page_title.html" with title="Mano užsakymai" %}{% else %}{% include "partials/page_title.html" with title="Užsakymai" %}{% endif %}
+    {% if is_vadybininkas %}
+      <div class="app-page-header__actions">
+        <a href="{% url 'orders:order_create' %}" class="cds--btn cds--btn--primary">Naujas užsakymas</a>
+      </div>
+    {% endif %}
+  </div>
+  <div class="cds--data-table-container app-table">
+    <table class="cds--data-table cds--data-table--lg">
+      <thead>
+        <tr>
+          <th><div class="cds--table-header-label">Nr.</div></th>
+          <th><div class="cds--table-header-label">Automobilis</div></th>
+          <th><div class="cds--table-header-label">Meistras</div></th>
+          <th><div class="cds--table-header-label">Pabaiga</div></th>
+          <th><div class="cds--table-header-label">Kaina</div></th>
+          <th><div class="cds--table-header-label">Būsena</div></th>
+          <th><span class="cds--visually-hidden">Veiksmai</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for o in orders %}
+          <tr>
+            <td>#{{ o.pk }}</td>
+            <td>{{ o.automobilis }}</td>
+            <td>{{ o.meistras|default:"—" }}</td>
+            <td>{{ o.planuojama_pabaigos_data|date:"Y-m-d"|default:"—" }}</td>
+            <td>{{ o.bendra_kaina }} €</td>
+            <td>{% include "partials/status_tag.html" with value=o.busena text=o.get_busena_display %}</td>
+            <td class="app-table__action"><a href="{% url 'orders:order_detail' o.pk %}" class="cds--link">Peržiūrėti</a></td>
+          </tr>
+        {% empty %}
+          {% include "partials/table_empty.html" with colspan=7 text="Užsakymų nėra." %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
