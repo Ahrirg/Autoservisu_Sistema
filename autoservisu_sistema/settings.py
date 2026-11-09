@@ -37,7 +37,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "main.apps.MainConfig",
+    "tailwind",
+    "theme",
+    # Project apps
+    "views.main.apps.MainConfig",
 ]
 
 MIDDLEWARE = [
@@ -62,6 +65,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "views.main.context_processors.user_role",
             ],
         },
     },
@@ -116,6 +120,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 STATIC_URL = "static/"
+
+
+TAILWIND_APP_NAME = "theme"
+
+
+# Auth
+
+LOGIN_URL = "accounts:login"
+LOGIN_REDIRECT_URL = "main:dashboard"
+LOGOUT_REDIRECT_URL = "accounts:login"
 
 
 # Email

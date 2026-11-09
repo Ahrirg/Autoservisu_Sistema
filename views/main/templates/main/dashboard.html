@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Pagrindinis{% endblock %}
+{% block content %}
+  <h1 class="app-greeting">Sveiki, {{ user.get_full_name|default:user.username }}!</h1>
+  <p class="app-greeting__role">UserRole: {{ role.label|default:"Administratorius" }}</p>
+{% endblock %}
