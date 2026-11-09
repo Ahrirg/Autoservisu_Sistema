@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}{{ part.pavadinimas }}{% endblock %}
+{% block content %}
+  <div class="app-page-header">
+    {% url 'inventory:part_list' as back %}{% include "partials/page_title.html" with title=part.pavadinimas subtitle=part.katalogo_nr back_url=back back_label="Dalys" %}
+    <div class="app-page-header__actions">
+      <a href="{% url 'inventory:part_edit' part.pk %}" class="cds--btn cds--btn--primary">{% if is_meistras %}Redaguoti likutį{% else %}Redaguoti{% endif %}</a>
+    </div>
+  </div>
+  <div class="app-split">
+    <div class="app-panel">
+      <dl class="app-fields">
+        {% include "partials/field.html" with label="Gamintojas" value=part.gamintojas %}
+        {% include "partials/field.html" with label="Katalogo Nr." value=part.katalogo_nr %}
+        {% include "partials/field.html" with label="Kaina (€)" value=part.kaina %}
+        {% include "partials/field.html" with label="Vieta sandėlyje" value=part.vieta %}
+      </dl>
+    </div>
+    <div class="app-panel">
+      <h2 class="app-panel__title">Likutis</h2>
+      <p class="app-metric{% if part.mazas_likutis %} app-metric--danger{% endif %}">{{ part.likutis }} <span class="app-metric__unit">vnt.</span></p>
+      <p class="app-text-secondary">Minimalus: {{ part.minimalus_likutis }} · Prognozė: {{ part.prognozuojamas_poreikis }}</p>
+      {% if is_vadybininkas %}
+        <div class="app-panel__actions">
+          <!-- full implementation goes here: create supplier purchase order -->
+          <button type="button" class="cds--btn cds--btn--tertiary" data-not-implemented="Dalių užsakymas iš tiekėjo">Užsakyti iš tiekėjo</button>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

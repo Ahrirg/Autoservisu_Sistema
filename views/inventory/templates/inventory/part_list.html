@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Dalys{% endblock %}
+{% block content %}
+  <div class="app-page-header">
+    {% include "partials/page_title.html" with title="Dalys" %}
+    {% if is_vadybininkas %}
+      <div class="app-page-header__actions">
+        <!-- full implementation goes here: run forecasting (Prognozavimo valdiklis) over past orders -> DaliesPrognoze -->
+        <button type="button" class="cds--btn cds--btn--tertiary" data-not-implemented="Dalių poreikio prognozavimas">Prognozuoti poreikį</button>
+        <a href="{% url 'inventory:part_create' %}" class="cds--btn cds--btn--primary">Įvesti dalį</a>
+      </div>
+    {% endif %}
+  </div>
+  <div class="cds--data-table-container app-table">
+    <table class="cds--data-table cds--data-table--lg">
+      <thead>
+        <tr>
+          <th><div class="cds--table-header-label">Pavadinimas</div></th>
+          <th><div class="cds--table-header-label">Katalogo Nr.</div></th>
+          <th><div class="cds--table-header-label">Gamintojas</div></th>
+          <th><div class="cds--table-header-label">Kaina</div></th>
+          <th><div class="cds--table-header-label">Likutis</div></th>
+          <th><div class="cds--table-header-label">Vieta</div></th>
+          <th><span class="cds--visually-hidden">Veiksmai</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in parts %}
+          <tr>
+            <td>{{ p.pavadinimas }}</td>
+            <td class="app-mono">{{ p.katalogo_nr }}</td>
+            <td>{{ p.gamintojas }}</td>
+            <td>{{ p.kaina }} €</td>
+            <td>{% if p.mazas_likutis %}{% include "partials/status_tag.html" with value="mazas" text=p.likutis %}{% else %}{{ p.likutis }}{% endif %}</td>
+            <td>{{ p.vieta }}</td>
+            <td class="app-table__action"><a href="{% url 'inventory:part_detail' p.pk %}" class="cds--link">Peržiūrėti</a></td>
+          </tr>
+        {% empty %}
+          {% include "partials/table_empty.html" with colspan=7 %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
