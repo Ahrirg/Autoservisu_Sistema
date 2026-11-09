@@ -1,0 +1,68 @@
+{# Renders a Django form with Carbon form markup. Widget classes come from main.forms.CarbonFormMixin. #}
+{% if form.non_field_errors %}
+  <div class="app-form__errors">
+    {% for error in form.non_field_errors %}
+      <div class="cds--inline-notification cds--inline-notification--low-contrast cds--inline-notification--error" role="alert">
+        <div class="cds--inline-notification__details">
+          {% include "icons/error-filled.svg" with cls="cds--inline-notification__icon" %}
+          <div class="cds--inline-notification__text-wrapper"><div class="cds--inline-notification__subtitle">{{ error }}</div></div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+{% for field in form.hidden_fields %}{{ field }}{% endfor %}
+{% for field in form.visible_fields %}
+  {% with type=field.widget_type %}
+    {% if type == "checkbox" %}
+      <div class="cds--form-item cds--checkbox-wrapper">
+        {{ field }}
+        <label for="{{ field.id_for_label }}" class="cds--checkbox-label"><span class="cds--checkbox-label-text">{{ field.label }}</span></label>
+      </div>
+
+    {% elif type == "checkboxselectmultiple" %}
+      <fieldset class="cds--fieldset cds--form-item">
+        <legend class="cds--label">{{ field.label }}</legend>
+        <div class="app-choices">
+          {% for choice in field %}
+            <div class="cds--checkbox-wrapper">
+              {{ choice.tag }}
+              <label for="{{ choice.id_for_label }}" class="cds--checkbox-label"><span class="cds--checkbox-label-text">{{ choice.choice_label }}</span></label>
+            </div>
+          {% endfor %}
+        </div>
+      </fieldset>
+
+    {% elif type == "select" %}
+      <div class="cds--form-item">
+        <div class="cds--select{% if field.errors %} cds--select--invalid{% endif %}">
+          <label for="{{ field.id_for_label }}" class="cds--label">{{ field.label }}</label>
+          <div class="cds--select-input__wrapper"{% if field.errors %} data-invalid{% endif %}>
+            {{ field }}
+            {% include "icons/chevron-down.svg" with size=16 cls="cds--select__arrow" %}
+          </div>
+          {% for error in field.errors %}<div class="cds--form-requirement">{{ error }}</div>{% endfor %}
+        </div>
+      </div>
+
+    {% elif type == "textarea" %}
+      <div class="cds--form-item">
+        <label for="{{ field.id_for_label }}" class="cds--label">{{ field.label }}</label>
+        <div class="cds--text-area__wrapper"{% if field.errors %} data-invalid{% endif %}>{{ field }}</div>
+        {% for error in field.errors %}<div class="cds--form-requirement">{{ error }}</div>{% endfor %}
+      </div>
+
+    {% else %}
+      <div class="cds--form-item cds--text-input-wrapper">
+        <label for="{{ field.id_for_label }}" class="cds--label">{{ field.label }}</label>
+        <div class="cds--text-input__field-outer-wrapper">
+          <div class="cds--text-input__field-wrapper"{% if field.errors %} data-invalid{% endif %}>
+            {{ field }}
+            {% if field.errors %}{% include "icons/warning-filled.svg" with size=16 cls="cds--text-input__invalid-icon" %}{% endif %}
+          </div>
+          {% for error in field.errors %}<div class="cds--form-requirement">{{ error }}</div>{% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  {% endwith %}
+{% endfor %}

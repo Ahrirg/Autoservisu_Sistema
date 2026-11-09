@@ -1,0 +1,67 @@
+{# Carbon UI shell: header + (small screens) side nav #}
+<header class="cds--header" aria-label="Autoservisas">
+  <a class="cds--skip-to-content" href="#main-content" tabindex="0">Pereiti prie turinio</a>
+
+  {% if user.is_authenticated %}
+    <button type="button" class="cds--header__action cds--header__menu-trigger cds--header__menu-toggle cds--header__menu-toggle__hidden" aria-label="Meniu" aria-expanded="false" aria-controls="side-nav" data-side-nav-toggle>
+      {% include "icons/menu.svg" %}
+    </button>
+  {% endif %}
+
+  <a class="cds--header__name" href="{% url 'main:dashboard' %}">Autoservisas</a>
+
+  {% if user.is_authenticated %}
+    <nav class="cds--header__nav" aria-label="Pagrindinė navigacija">
+      <ul class="cds--header__menu-bar">
+        {% for item in nav_items %}
+          <li>
+            <a class="cds--header__menu-item" href="{{ item.url }}"{% if item.active %} aria-current="page"{% endif %}>
+              <span class="cds--text-truncate--end">{{ item.label }}</span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <div class="cds--header__global">
+      <a class="app-header-user" href="{% url 'accounts:profile' %}">
+        <span class="app-header-user__name">{{ user.get_full_name|default:user.username }}</span>
+        <span class="app-header-user__role">{{ role.label|default:"Administratorius" }}</span>
+      </a>
+      <a class="cds--header__action" href="{% url 'accounts:profile' %}" aria-label="Mano paskyra" title="Mano paskyra">
+        {% include "icons/user-avatar.svg" %}
+      </a>
+      <form class="app-header-form" method="post" action="{% url 'accounts:logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="cds--header__action" aria-label="Atsijungti" title="Atsijungti">
+          {% include "icons/logout.svg" %}
+        </button>
+      </form>
+    </div>
+  {% else %}
+    <nav class="cds--header__nav" aria-label="Svečio navigacija">
+      <ul class="cds--header__menu-bar">
+        {% url 'accounts:login' as login_url %}{% url 'accounts:register' as register_url %}
+        <li><a class="cds--header__menu-item" href="{{ login_url }}"{% if request.path == login_url %} aria-current="page"{% endif %}>Prisijungti</a></li>
+        <li><a class="cds--header__menu-item" href="{{ register_url }}"{% if request.path == register_url %} aria-current="page"{% endif %}>Registruotis</a></li>
+      </ul>
+    </nav>
+  {% endif %}
+</header>
+
+{% if user.is_authenticated %}
+  <nav class="cds--side-nav cds--side-nav__navigation cds--side-nav--ux app-side-nav" id="side-nav" aria-label="Meniu" data-side-nav>
+    <ul class="cds--side-nav__items">
+      {% for item in nav_items %}
+        <li class="cds--side-nav__item">
+          <a class="cds--side-nav__link{% if item.active %} cds--side-nav__link--current{% endif %}" href="{{ item.url }}"{% if item.active %} aria-current="page"{% endif %}>
+            <span class="cds--side-nav__link-text">{{ item.label }}</span>
+          </a>
+        </li>
+      {% endfor %}
+      <li class="cds--side-nav__item">
+        <a class="cds--side-nav__link" href="{% url 'accounts:profile' %}"><span class="cds--side-nav__link-text">Mano paskyra</span></a>
+      </li>
+    </ul>
+  </nav>
+{% endif %}

@@ -1,0 +1,5 @@
+{# Params: label, value, wide (opt) #}
+<div class="app-field{% if wide %} app-field--wide{% endif %}">
+  <dt class="app-field__label">{{ label }}</dt>
+  <dd class="app-field__value">{{ value|default:"—" }}</dd>
+</div>

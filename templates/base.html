@@ -1,0 +1,25 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Autoservisas{% endblock %} · Autoservisas</title>
+  {% tailwind_css %}
+</head>
+<body>
+  {% include "partials/header.html" %}
+
+  <main class="app-main" id="main-content">
+    <div class="app-container{% block container_modifier %}{% endblock %}">
+      {% include "partials/messages.html" %}
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <footer class="app-footer"></footer>
+
+  {% include "partials/not_implemented_modal.html" %}
+  <script src="{% static 'js/app.js' %}" defer></script>
+</body>
+</html>

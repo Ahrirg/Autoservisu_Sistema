@@ -1,0 +1,14 @@
+{# Generic Carbon form. Params: form, cancel_url, submit_label (opt), extra_feature (opt: tertiary button opening the not-implemented modal) #}
+<form method="post" class="app-form" novalidate>
+  {% csrf_token %}
+  <div class="app-form__body">
+    {% include "partials/form_fields.html" %}
+  </div>
+  <div class="app-form__footer">
+    {% if extra_feature %}
+      <button type="button" class="cds--btn cds--btn--tertiary" data-not-implemented="{{ extra_feature }}">{{ extra_feature }}</button>
+    {% endif %}
+    <a href="{{ cancel_url }}" class="cds--btn cds--btn--secondary">Atšaukti</a>
+    <button type="submit" class="cds--btn cds--btn--primary">{{ submit_label|default:"Išsaugoti" }}</button>
+  </div>
+</form>

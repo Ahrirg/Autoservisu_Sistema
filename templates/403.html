@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Prieiga draudžiama{% endblock %}
+{% block content %}
+  <div class="app-error">
+    <p class="app-error__code">403</p>
+    <h1 class="app-error__title">Prieiga draudžiama</h1>
+    <a href="{% url 'main:dashboard' %}" class="cds--btn cds--btn--primary">Į pagrindinį</a>
+  </div>
+{% endblock %}

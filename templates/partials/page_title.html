@@ -1,0 +1,12 @@
+{# Params: title, subtitle (opt), back_url + back_label (opt, rendered as Carbon breadcrumb) #}
+<div>
+  {% if back_url %}
+    <nav class="cds--breadcrumb cds--breadcrumb--no-trailing-slash app-page-header__breadcrumb" aria-label="Kelias">
+      <div class="cds--breadcrumb-item">
+        <a class="cds--link" href="{{ back_url }}">{{ back_label|default:"Atgal" }}</a>
+      </div>
+    </nav>
+  {% endif %}
+  <h1 class="app-page-header__title">{{ title }}</h1>
+  {% if subtitle %}<p class="app-page-header__subtitle">{{ subtitle }}</p>{% endif %}
+</div>

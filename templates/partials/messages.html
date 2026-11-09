@@ -1,0 +1,18 @@
+{% if messages %}
+  <div class="app-notifications">
+    {% for message in messages %}
+      {# message.tags: info | success | warning | error -> Carbon notification kinds #}
+      <div class="cds--inline-notification cds--inline-notification--low-contrast cds--inline-notification--{{ message.tags|default:'info' }}" role="status">
+        <div class="cds--inline-notification__details">
+          {% if message.tags == "success" %}{% include "icons/checkmark-filled.svg" with cls="cds--inline-notification__icon" %}
+          {% elif message.tags == "error" %}{% include "icons/error-filled.svg" with cls="cds--inline-notification__icon" %}
+          {% elif message.tags == "warning" %}{% include "icons/warning-filled.svg" with cls="cds--inline-notification__icon" %}
+          {% else %}{% include "icons/information-filled.svg" with cls="cds--inline-notification__icon" %}{% endif %}
+          <div class="cds--inline-notification__text-wrapper">
+            <div class="cds--inline-notification__subtitle">{{ message }}</div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
