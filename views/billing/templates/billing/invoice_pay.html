@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Apmokėti sąskaitą{% endblock %}
+{% block content %}
+  <div class="app-page-header">
+    {% url 'billing:invoice_detail' invoice.pk as back %}{% include "partials/page_title.html" with title="Sąskaitos apmokėjimas" subtitle=invoice back_url=back back_label="Sąskaita" %}
+  </div>
+  <div class="app-form">
+    <div class="app-form__body app-form__body--single">
+      <div>
+        <p class="app-field__label">Mokėtina suma</p>
+        <p class="app-metric">{{ invoice.suma_su_pvm }} <span class="app-metric__unit">€</span></p>
+        <p class="app-text-secondary">Apmokėti iki {{ invoice.apmokejimo_terminas|date:"Y-m-d" }}</p>
+      </div>
+    </div>
+    <div class="app-form__footer">
+      <a href="{% url 'billing:invoice_detail' invoice.pk %}" class="cds--btn cds--btn--secondary">Atšaukti</a>
+      <!-- full implementation goes here: POST -> stripe.checkout.Session.create(...), redirect to session.url; webhook marks invoice paid -->
+      <button type="button" class="cds--btn cds--btn--primary" data-not-implemented="Stripe mokėjimas">Mokėti su Stripe</button>
+    </div>
+  </div>
+{% endblock %}

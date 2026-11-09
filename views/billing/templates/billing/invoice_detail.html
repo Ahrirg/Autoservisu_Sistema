@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Sąskaita {{ invoice }}{% endblock %}
+{% block content %}
+  <div class="app-page-header">
+    {% url 'billing:invoice_list' as back %}{% include "partials/page_title.html" with title="Sąskaita "|add:invoice.saskaitos_nr back_url=back back_label="Sąskaitos" %}
+    <div class="app-page-header__actions">
+      <!-- full implementation goes here: render invoice PDF (e.g. WeasyPrint) -->
+      <button type="button" class="cds--btn cds--btn--tertiary" data-not-implemented="Sąskaitos PDF">Atsisiųsti PDF</button>
+      {% if is_vadybininkas %}
+        <a href="{% url 'orders:order_detail' invoice.uzsakymas.pk %}" class="cds--btn cds--btn--secondary">Užsakymas #{{ invoice.uzsakymas.pk }}</a>
+        <a href="{% url 'billing:invoice_edit' invoice.pk %}" class="cds--btn cds--btn--primary">Redaguoti</a>
+      {% elif is_klientas and invoice.busena == "neapmoketa" %}
+        <a href="{% url 'billing:invoice_pay' invoice.pk %}" class="cds--btn cds--btn--primary">Apmokėti</a>
+      {% endif %}
+    </div>
+  </div>
+  <div class="app-panel">
+    <dl class="app-fields app-fields--3">
+      <div class="app-field"><dt class="app-field__label">Būsena</dt><dd class="app-field__value">{% include "partials/status_tag.html" with value=invoice.busena text=invoice.get_busena_display %}</dd></div>
+      {% include "partials/field.html" with label="Išrašymo data" value=invoice.israsymo_data|date:"Y-m-d" %}
+      {% include "partials/field.html" with label="Apmokėjimo terminas" value=invoice.apmokejimo_terminas|date:"Y-m-d" %}
+      {% include "partials/field.html" with label="Klientas" value=invoice.uzsakymas.automobilis.savininkas %}
+      {% include "partials/field.html" with label="Automobilis" value=invoice.uzsakymas.automobilis %}
+      {% include "partials/field.html" with label="Apmokėjimo data" value=invoice.apmokejimo_data|date:"Y-m-d" %}
+    </dl>
+    <dl class="app-totals">
+      <div class="app-totals__row"><dt>Suma be PVM</dt><dd>{{ invoice.suma }} €</dd></div>
+      <div class="app-totals__row"><dt>PVM</dt><dd>{{ invoice.pvm_suma }} €</dd></div>
+      <div class="app-totals__row app-totals__row--total"><dt>Iš viso</dt><dd>{{ invoice.suma_su_pvm }} €</dd></div>
+    </dl>
+  </div>
+{% endblock %}

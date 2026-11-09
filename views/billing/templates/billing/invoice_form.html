@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}{% if invoice %}Redaguoti sąskaitą{% else %}Nauja sąskaita{% endif %}{% endblock %}
+{% block content %}
+  <div class="app-page-header">
+    {% if invoice %}
+      {% url 'billing:invoice_detail' invoice.pk as back %}{% include "partials/page_title.html" with title="Redaguoti sąskaitą" subtitle=invoice back_url=back back_label="Sąskaita" %}
+    {% else %}
+      {% url 'billing:invoice_list' as back %}{% include "partials/page_title.html" with title="Nauja sąskaita" back_url=back back_label="Sąskaitos" %}
+    {% endif %}
+  </div>
+  <!-- full implementation goes here: POST validates SaskaitaForm, auto-generates saskaitos_nr and sums from Uzsakymas, saves -->
+  {% if invoice %}{% url 'billing:invoice_detail' invoice.pk as cancel %}{% else %}{% url 'billing:invoice_list' as cancel %}{% endif %}
+  {% include "partials/form_card.html" with cancel_url=cancel %}
+{% endblock %}

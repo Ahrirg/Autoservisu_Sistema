@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Sąskaitos{% endblock %}
+{% block content %}
+  <div class="app-page-header">
+    {% include "partials/page_title.html" with title="Sąskaitos" %}
+    {% if is_vadybininkas %}
+      <div class="app-page-header__actions">
+        <a href="{% url 'billing:invoice_create' %}" class="cds--btn cds--btn--primary">Nauja sąskaita</a>
+      </div>
+    {% endif %}
+  </div>
+  <div class="cds--data-table-container app-table">
+    <table class="cds--data-table cds--data-table--lg">
+      <thead>
+        <tr>
+          <th><div class="cds--table-header-label">Nr.</div></th>
+          <th><div class="cds--table-header-label">Išrašyta</div></th>
+          <th><div class="cds--table-header-label">Terminas</div></th>
+          {% if is_vadybininkas %}<th><div class="cds--table-header-label">Klientas</div></th>{% endif %}
+          <th><div class="cds--table-header-label">Suma su PVM</div></th>
+          <th><div class="cds--table-header-label">Būsena</div></th>
+          <th><span class="cds--visually-hidden">Veiksmai</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in invoices %}
+          <tr>
+            <td>{{ i.saskaitos_nr }}</td>
+            <td>{{ i.israsymo_data|date:"Y-m-d" }}</td>
+            <td>{{ i.apmokejimo_terminas|date:"Y-m-d" }}</td>
+            {% if is_vadybininkas %}<td>{{ i.uzsakymas.automobilis.savininkas }}</td>{% endif %}
+            <td>{{ i.suma_su_pvm }} €</td>
+            <td>{% include "partials/status_tag.html" with value=i.busena text=i.get_busena_display %}</td>
+            <td class="app-table__action"><a href="{% url 'billing:invoice_detail' i.pk %}" class="cds--link">Peržiūrėti</a></td>
+          </tr>
+        {% empty %}
+          {% include "partials/table_empty.html" with colspan=7 text="Sąskaitų nėra." %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
