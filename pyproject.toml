@@ -9,17 +9,15 @@ authors = [
 requires-python = ">=3.13"
 dependencies = [
     "django>=6.1.2",
+    "django-tailwind>=4.6.0",
 ]
 
-[project.scripts]
-autoservisu-sistema = "autoservisu_sistema:main"
-
-[build-system]
-requires = ["uv_build>=0.13.5,<0.14.0"]
-build-backend = "uv_build"
+[tool.uv]
+package = false
 
 [dependency-groups]
 dev = [
+    "django-types>=0.24.0",
     "pytest>=9.2.0",
     "pytest-django>=4.14.0",
     "ruff>=0.17.3",
@@ -35,6 +33,9 @@ addopts = "-ra"
 [tool.ruff]
 target-version = "py313"
 line-length = 88
+extend-exclude = ["*/migrations/*"]
 
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F", "I", "B", "UP", "SIM", "RUF"]
+# RUF012: Django Meta / migration class attributes are idiomatic mutables
+ignore = ["RUF012"]

@@ -10,7 +10,11 @@ Reiks situ (pasigooglinkit kaip instaliuot jei neturit)
 
 init project:
 ```
+uv sync
 uv run python manage.py migrate
+uv run python manage.py seed_demo
+uv run python manage.py tailwind install
+uv run python manage.py tailwind build
 ```
 
 to run program:

@@ -75,3 +75,9 @@ dist/
 # Jupyter
 # =========================
 .ipynb_checkpoints/
+# =========================
+# Tailwind (django-tailwind)
+# =========================
+node_modules/
+theme/static/css/dist/
+tmp/
