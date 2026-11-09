@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}{% if meistras %}Redaguoti darbuotoją{% else %}Naujas darbuotojas{% endif %}{% endblock %}
+{% block content %}
+  <div class="app-page-header">
+    {% if meistras %}
+      {% url 'accounts:employee_detail' meistras.pk as back %}{% include "partials/page_title.html" with title="Redaguoti darbuotoją" subtitle=meistras back_url=back back_label="Darbuotojas" %}
+    {% else %}
+      {% url 'accounts:employee_list' as back %}{% include "partials/page_title.html" with title="Naujas darbuotojas" back_url=back back_label="Darbuotojai" %}
+    {% endif %}
+  </div>
+  <!-- full implementation goes here: create/update User + Meistras profile, send credentials by e-mail -->
+  <form method="post" class="app-form" novalidate>
+    {% csrf_token %}
+    <div class="app-form__body">
+      <h2 class="app-form__section">Naudotojas</h2>
+      {% include "partials/form_fields.html" with form=user_form %}
+      <h2 class="app-form__section">Meistro duomenys</h2>
+      {% include "partials/form_fields.html" %}
+    </div>
+    <div class="app-form__footer">
+      <a href="{% if meistras %}{% url 'accounts:employee_detail' meistras.pk %}{% else %}{% url 'accounts:employee_list' %}{% endif %}" class="cds--btn cds--btn--secondary">Atšaukti</a>
+      <button type="submit" class="cds--btn cds--btn--primary">Išsaugoti</button>
+    </div>
+  </form>
+{% endblock %}

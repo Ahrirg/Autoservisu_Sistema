@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Registracija{% endblock %}
+{% block container_modifier %} app-container--narrow{% endblock %}
+{% block content %}
+  <div class="app-auth">
+    <h1 class="app-auth__title">Registracija</h1>
+    <form method="post" class="app-auth__body" novalidate>
+      {% csrf_token %}
+      {% include "partials/form_fields.html" %}
+      <!-- full implementation goes here: e-mail confirmation before activating the account -->
+      <button type="submit" class="cds--btn cds--btn--primary">Registruotis</button>
+    </form>
+    <div class="app-auth__links">
+      <span class="app-text-secondary">Jau turite paskyrą?</span>
+      <a href="{% url 'accounts:login' %}" class="cds--link">Prisijungti</a>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Redaguoti paskyrą{% endblock %}
+{% block content %}
+  <div class="app-page-header">
+    {% url 'accounts:profile' as back %}{% include "partials/page_title.html" with title="Redaguoti paskyrą" back_url=back back_label="Mano paskyra" %}
+  </div>
+  <!-- full implementation goes here: POST saves UserForm + KlientasForm (see accounts.views.profile_edit) -->
+  <form method="post" class="app-form" novalidate>
+    {% csrf_token %}
+    <div class="app-form__body">
+      {% include "partials/form_fields.html" with form=user_form %}
+      {% if klientas_form %}{% include "partials/form_fields.html" with form=klientas_form %}{% endif %}
+    </div>
+    <div class="app-form__footer">
+      <a href="{% url 'accounts:profile' %}" class="cds--btn cds--btn--secondary">Atšaukti</a>
+      <button type="submit" class="cds--btn cds--btn--primary">Išsaugoti</button>
+    </div>
+  </form>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Mano paskyra{% endblock %}
+{% block content %}
+  <div class="app-page-header">
+    {% url 'main:dashboard' as back %}{% include "partials/page_title.html" with title="Mano paskyra" subtitle=role.label back_url=back back_label="Pagrindinis" %}
+    <div class="app-page-header__actions">
+      <a href="{% url 'accounts:profile_delete' %}" class="cds--btn cds--btn--danger--tertiary">Šalinti paskyrą</a>
+      <a href="{% url 'accounts:profile_edit' %}" class="cds--btn cds--btn--primary">Redaguoti</a>
+    </div>
+  </div>
+  <div class="app-panel">
+    <dl class="app-fields app-fields--3">
+      {% include "partials/field.html" with label="Vardas" value=user.first_name %}
+      {% include "partials/field.html" with label="Pavardė" value=user.last_name %}
+      {% include "partials/field.html" with label="El. paštas" value=user.email %}
+      {% include "partials/field.html" with label="Prisijungimo vardas" value=user.username %}
+      {% include "partials/field.html" with label="Sukūrimo data" value=user.date_joined|date:"Y-m-d" %}
+      {% if is_klientas %}
+        {% include "partials/field.html" with label="Adresas" value=user.klientas.adresas %}
+        {% include "partials/field.html" with label="Pranešimai" value=user.klientas.sutinka_gauti_pranesimus|yesno:"Sutinka,Nesutinka" %}
+      {% elif is_meistras %}
+        {% include "partials/field.html" with label="Kvalifikacija" value=user.meistras.kvalifikacija %}
+      {% elif is_vadybininkas %}
+        {% include "partials/field.html" with label="Darbo telefonas" value=user.vadybininkas.darbo_telefonas %}
+      {% endif %}
+    </dl>
+  </div>
+{% endblock %}

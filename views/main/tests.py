@@ -42,6 +42,19 @@ class PrototypeScreensTests(TestCase):
         response = self.client.get(reverse("accounts:register"))
         self.assertNotContains(response, "sutinka_gauti_pranesimus")
 
+    def test_forms_have_no_english_labels(self):
+        # Visible text only (">" prefix), so attributes like type="password" pass
+        english = [">Username", ">Password", ">First name", ">Last name", "Select an"]
+        for url in [reverse("accounts:login"), reverse("accounts:register")]:
+            for text in english:
+                with self.subTest(url=url, text=text):
+                    self.assertNotContains(self.client.get(url), text)
+        self.login("user1")
+        for url in [reverse("accounts:profile_edit"), reverse("vehicles:car_create")]:
+            for text in english:
+                with self.subTest(url=url, text=text):
+                    self.assertNotContains(self.client.get(url), text)
+
     def test_register_creates_klientas(self):
         response = self.client.post(
             reverse("accounts:register"),

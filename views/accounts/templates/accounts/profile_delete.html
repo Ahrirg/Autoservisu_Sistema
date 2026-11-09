@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Šalinti paskyrą{% endblock %}
+{% block content %}
+  <div class="app-page-header">
+    {% url 'accounts:profile' as back %}{% include "partials/page_title.html" with title="Šalinti paskyrą?" subtitle="Paskyra ir su ja susiję duomenys bus pašalinti. Šio veiksmo atšaukti negalima." back_url=back back_label="Mano paskyra" %}
+  </div>
+  <!-- full implementation goes here: POST deletes/anonymises the user and logs out (accounts.views.profile_delete) -->
+  <form method="post" class="app-form">
+    {% csrf_token %}
+    <div class="app-form__body app-form__body--single">
+      <dl class="app-fields">{% include "partials/field.html" with label="Paskyra" value=user.username %}</dl>
+    </div>
+    <div class="app-form__footer">
+      <a href="{% url 'accounts:profile' %}" class="cds--btn cds--btn--secondary">Atšaukti</a>
+      <button type="submit" class="cds--btn cds--btn--danger">Taip, šalinti</button>
+    </div>
+  </form>
+{% endblock %}

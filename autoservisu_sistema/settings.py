@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "theme",
     # Project apps
     "views.main.apps.MainConfig",
+    "views.accounts.apps.AccountsConfig",
 ]
 
 MIDDLEWARE = [

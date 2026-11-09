@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Prisijungimas{% endblock %}
+{% block container_modifier %} app-container--narrow{% endblock %}
+{% block content %}
+  <div class="app-auth">
+    <h1 class="app-auth__title">Prisijungimas</h1>
+    <form method="post" class="app-auth__body" novalidate>
+      {% csrf_token %}
+      {% include "partials/form_fields.html" %}
+      <input type="hidden" name="next" value="{{ next }}">
+      <button type="submit" class="cds--btn cds--btn--primary">Prisijungti</button>
+    </form>
+    <div class="app-auth__links">
+      <!-- full implementation goes here: password reset flow (django.contrib.auth PasswordResetView) -->
+      <a href="#" class="cds--link" data-not-implemented="Slaptažodžio atkūrimas">Pamiršote slaptažodį?</a>
+      <a href="{% url 'accounts:register' %}" class="cds--link">Registruotis</a>
+    </div>
+    <!-- prototype only: demo accounts created by `manage.py seed_demo` -->
+    <p class="app-hint">Demo naudotojai: user1, user2, vadybininkas, meistras, meistras2, meistras3, admin · slaptažodis: pass</p>
+  </div>
+{% endblock %}

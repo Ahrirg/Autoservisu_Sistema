@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}{{ meistras }}{% endblock %}
+{% block content %}
+  <div class="app-page-header">
+    {% url 'accounts:employee_list' as back %}{% include "partials/page_title.html" with title=meistras back_url=back back_label="Darbuotojai" %}
+    <div class="app-page-header__actions">
+      <a href="{% url 'accounts:employee_edit' meistras.pk %}" class="cds--btn cds--btn--primary">Redaguoti</a>
+    </div>
+  </div>
+  <div class="app-panel">
+    <dl class="app-fields app-fields--3">
+      {% include "partials/field.html" with label="El. paštas" value=meistras.user.email %}
+      {% include "partials/field.html" with label="Prisijungimo vardas" value=meistras.user.username %}
+      {% include "partials/field.html" with label="Kvalifikacija" value=meistras.kvalifikacija %}
+      {% include "partials/field.html" with label="Darbo stažas (m.)" value=meistras.darbo_stazas %}
+      {% include "partials/field.html" with label="Valandinis įkainis (€)" value=meistras.valandinis_ikainis %}
+      {% include "partials/field.html" with label="Įdarbinimo data" value=meistras.idarbinimo_data|date:"Y-m-d" %}
+      {% include "partials/field.html" with label="Maks. užsakymų" value=meistras.max_uzsakymu_skaicius %}
+      {% include "partials/field.html" with label="Užimtas" value=meistras.uzimtas|yesno:"Taip,Ne" %}
+    </dl>
+  </div>
+{% endblock %}

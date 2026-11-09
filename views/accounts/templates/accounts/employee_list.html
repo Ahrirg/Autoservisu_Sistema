@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Darbuotojai{% endblock %}
+{% block content %}
+  <div class="app-page-header">
+    {% include "partials/page_title.html" with title="Darbuotojai" %}
+    <div class="app-page-header__actions">
+      <a href="{% url 'accounts:employee_create' %}" class="cds--btn cds--btn--primary">Naujas darbuotojas</a>
+    </div>
+  </div>
+  <div class="cds--data-table-container app-table">
+    <table class="cds--data-table cds--data-table--lg">
+      <thead>
+        <tr>
+          <th><div class="cds--table-header-label">Vardas, pavardė</div></th>
+          <th><div class="cds--table-header-label">Kvalifikacija</div></th>
+          <th><div class="cds--table-header-label">Stažas</div></th>
+          <th><div class="cds--table-header-label">Įkainis</div></th>
+          <th><div class="cds--table-header-label">Būsena</div></th>
+          <th><span class="cds--visually-hidden">Veiksmai</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for m in meistrai %}
+          <tr>
+            <td>{{ m }}</td>
+            <td>{{ m.kvalifikacija }}</td>
+            <td>{{ m.darbo_stazas }} m.</td>
+            <td>{{ m.valandinis_ikainis }} €/val.</td>
+            <td>{% if m.uzimtas %}{% include "partials/status_tag.html" with value="uzimtas" text="Užimtas" %}{% else %}{% include "partials/status_tag.html" with value="laisvas" text="Laisvas" %}{% endif %}</td>
+            <td class="app-table__action"><a href="{% url 'accounts:employee_detail' m.pk %}" class="cds--link">Peržiūrėti</a></td>
+          </tr>
+        {% empty %}
+          {% include "partials/table_empty.html" with colspan=6 %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
