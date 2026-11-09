@@ -1,0 +1,19 @@
+/*
+ * Tailwind v4 (django-tailwind) + IBM Carbon Design System.
+ *
+ * Carbon provides reset, typography, theme tokens and components
+ * (compiled from src/carbon.scss -> src/carbon.css by `npm run build:sass`).
+ * Tailwind's preflight is skipped (Carbon's reset is used instead); its theme
+ * and utilities stay available for layout.
+ */
+@layer theme, base, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "./carbon.css" layer(components);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/**
+  * A catch-all path to Django template files, JavaScript, and Python files
+  * that contain Tailwind CSS classes and will be scanned by Tailwind to generate the final CSS file.
+  */
+@source "../../../**/*.{html,py,js}";

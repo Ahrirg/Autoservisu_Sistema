@@ -1,0 +1,518 @@
+// Carbon Design System (https://carbondesignsystem.com) for Autoservisas.
+//
+// Compiled by `npm run build:sass` into src/carbon.css, which styles.css imports
+// into the Tailwind pipeline. Templates use Carbon component classes (`cds--*`)
+// and the semantic `app-*` classes below; no colours live in the HTML.
+
+@use '@carbon/styles/scss/config' with (
+  $use-akamai-cdn: true
+);
+@use '@carbon/styles/scss/reset';
+@use '@carbon/styles/scss/fonts';
+@use '@carbon/styles/scss/themes';
+@use '@carbon/styles/scss/theme' as *;
+@use '@carbon/styles/scss/zone';
+@use '@carbon/styles/scss/spacing' as *;
+@use '@carbon/styles/scss/type';
+@use '@carbon/styles/scss/breakpoint' as *;
+@use '@carbon/styles/scss/layout';
+@use '@carbon/styles/scss/layer';
+
+// Components in use
+@use '@carbon/styles/scss/components/breadcrumb';
+@use '@carbon/styles/scss/components/button';
+@use '@carbon/styles/scss/components/checkbox';
+@use '@carbon/styles/scss/components/data-table';
+@use '@carbon/styles/scss/components/form';
+@use '@carbon/styles/scss/components/link';
+@use '@carbon/styles/scss/components/modal';
+@use '@carbon/styles/scss/components/notification';
+@use '@carbon/styles/scss/components/radio-button';
+@use '@carbon/styles/scss/components/select';
+@use '@carbon/styles/scss/components/tag';
+@use '@carbon/styles/scss/components/text-area';
+@use '@carbon/styles/scss/components/text-input';
+@use '@carbon/styles/scss/components/tile';
+@use '@carbon/styles/scss/components/ui-shell';
+
+// ---------------------------------------------------------------------------
+// Theme: Gray 10 for the whole document (tokens incl. component tokens)
+// ---------------------------------------------------------------------------
+
+html {
+  @extend .cds--g10;
+}
+
+body {
+  @include type.font-family('sans');
+  @include type.type-style('body-01');
+
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  background: $background;
+  color: $text-primary;
+}
+
+// ---------------------------------------------------------------------------
+// Layout
+// ---------------------------------------------------------------------------
+
+.app-main {
+  flex: 1;
+  // UI shell header is fixed, 3rem high
+  padding-top: calc(3rem + #{$spacing-07});
+  padding-bottom: $spacing-09;
+}
+
+.app-container {
+  width: 100%;
+  max-width: 99rem;
+  margin: 0 auto;
+  padding: 0 $spacing-05;
+
+  @include breakpoint(md) {
+    padding: 0 $spacing-07;
+  }
+}
+
+.app-container--narrow {
+  max-width: 32rem;
+}
+
+.app-footer {
+  @extend .cds--g100;
+
+  min-height: $spacing-09;
+}
+
+.app-stack {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-06;
+}
+
+// Two-column detail page: main + aside
+.app-split {
+  display: grid;
+  gap: $spacing-06;
+
+  @include breakpoint(lg) {
+    grid-template-columns: 2fr 1fr;
+    align-items: start;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// UI shell additions
+// ---------------------------------------------------------------------------
+
+// Side nav is only the small-screen menu; the header nav covers lg and up.
+.app-side-nav {
+  @include breakpoint(lg) {
+    display: none;
+  }
+}
+
+// Anchors used as header actions (Carbon styles them for <button>)
+.cds--header__global .cds--header__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: $icon-primary;
+}
+
+.app-header-user {
+  display: none;
+  text-decoration: none;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 $spacing-05;
+  color: $text-secondary;
+  text-align: right;
+
+  @include breakpoint(md) {
+    display: flex;
+  }
+}
+
+.app-header-user__name {
+  @include type.type-style('body-compact-01');
+
+  color: $text-primary;
+}
+
+.app-header-user__role {
+  @include type.type-style('helper-text-01');
+}
+
+.app-header-form {
+  display: contents;
+}
+
+// ---------------------------------------------------------------------------
+// Typography
+// ---------------------------------------------------------------------------
+
+.app-greeting {
+  @include type.type-style('productive-heading-05');
+}
+
+.app-greeting__role {
+  @include type.type-style('productive-heading-03');
+
+  margin-top: $spacing-03;
+  color: $text-secondary;
+}
+
+.app-heading {
+  @include type.type-style('productive-heading-03');
+
+  margin-bottom: $spacing-05;
+}
+
+.app-text-secondary {
+  @include type.type-style('body-01');
+
+  color: $text-secondary;
+}
+
+.app-mono {
+  @include type.type-style('code-02');
+}
+
+// ---------------------------------------------------------------------------
+// Page header: breadcrumb + title + actions
+// ---------------------------------------------------------------------------
+
+.app-page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: $spacing-05;
+  margin-bottom: $spacing-07;
+}
+
+.app-page-header__breadcrumb {
+  margin-bottom: $spacing-03;
+}
+
+.app-page-header__title {
+  @include type.type-style('productive-heading-04');
+}
+
+.app-page-header__subtitle {
+  @include type.type-style('body-01');
+
+  margin-top: $spacing-02;
+  color: $text-secondary;
+}
+
+.app-page-header__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+}
+
+// ---------------------------------------------------------------------------
+// Detail fields (label / value pairs)
+// ---------------------------------------------------------------------------
+
+.app-fields {
+  display: grid;
+  gap: $spacing-06 $spacing-07;
+
+  @include breakpoint(md) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.app-fields--3 {
+  @include breakpoint(lg) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.app-field--wide {
+  grid-column: 1 / -1;
+}
+
+.app-field__label {
+  @include type.type-style('label-01');
+
+  color: $text-secondary;
+}
+
+.app-field__value {
+  @include type.type-style('body-01');
+
+  margin-top: $spacing-02;
+  color: $text-primary;
+  white-space: pre-line;
+}
+
+// Big number (e.g. stock level)
+.app-metric {
+  @include type.type-style('productive-heading-06');
+}
+
+.app-metric--danger {
+  color: $support-error;
+}
+
+.app-metric__unit {
+  @include type.type-style('body-01');
+
+  color: $text-secondary;
+}
+
+// Totals list (invoice)
+.app-totals {
+  max-width: 20rem;
+  margin: $spacing-06 0 0 auto;
+  padding-top: $spacing-05;
+  border-top: 1px solid $border-subtle-01;
+}
+
+.app-totals__row {
+  display: flex;
+  justify-content: space-between;
+  padding: $spacing-02 0;
+  color: $text-secondary;
+}
+
+.app-totals__row--total {
+  @include type.type-style('heading-compact-01');
+
+  border-top: 1px solid $border-subtle-01;
+  margin-top: $spacing-02;
+  padding-top: $spacing-03;
+  color: $text-primary;
+}
+
+// Simple list inside a tile (services on an order)
+.app-list {
+  border-top: 1px solid $border-subtle-01;
+}
+
+.app-list__item {
+  display: flex;
+  justify-content: space-between;
+  gap: $spacing-05;
+  padding: $spacing-04 0;
+  border-bottom: 1px solid $border-subtle-01;
+}
+
+.app-list__meta {
+  color: $text-secondary;
+}
+
+// ---------------------------------------------------------------------------
+// Tiles / panels
+// ---------------------------------------------------------------------------
+
+.app-panel {
+  @extend .cds--tile;
+}
+
+.app-panel__title {
+  @include type.type-style('heading-compact-02');
+
+  margin-bottom: $spacing-05;
+}
+
+.app-panel__actions {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-03;
+  margin-top: $spacing-06;
+
+  .cds--btn {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Forms
+// ---------------------------------------------------------------------------
+
+.app-form {
+  @extend .cds--tile;
+
+  max-width: 48rem;
+  padding: 0;
+}
+
+.app-form__body {
+  // Fields on a layer-01 tile sit on layer two (Carbon layering model)
+  @extend .cds--layer-two;
+
+  display: grid;
+  gap: $spacing-06 $spacing-05;
+  padding: $spacing-06 $spacing-05;
+
+  @include breakpoint(md) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  > .cds--form-item {
+    margin: 0;
+  }
+}
+
+.app-form__body--single {
+  @include breakpoint(md) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.app-form__section {
+  @include type.type-style('heading-compact-01');
+
+  grid-column: 1 / -1;
+}
+
+.app-form__footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+  border-top: 1px solid $border-subtle-01;
+
+  .cds--btn {
+    flex: 1 1 0;
+    max-width: none;
+  }
+}
+
+.app-form__errors {
+  grid-column: 1 / -1;
+}
+
+.app-choices {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-03;
+}
+
+// Login / register card
+.app-auth {
+  @extend .cds--tile;
+
+  padding: $spacing-07 $spacing-06;
+}
+
+.app-auth__title {
+  @include type.type-style('productive-heading-04');
+}
+
+.app-auth__body {
+  @extend .cds--layer-two;
+
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-06;
+  margin-top: $spacing-07;
+
+  .cds--btn {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.app-auth__links {
+  display: flex;
+  justify-content: space-between;
+  margin-top: $spacing-06;
+}
+
+// ---------------------------------------------------------------------------
+// Data tables
+// ---------------------------------------------------------------------------
+
+.app-table {
+  overflow-x: auto;
+}
+
+.app-table__empty {
+  color: $text-secondary;
+  text-align: center;
+}
+
+.app-table__action {
+  text-align: right;
+}
+
+// ---------------------------------------------------------------------------
+// Status tags (semantic -> Carbon tag colours)
+// ---------------------------------------------------------------------------
+
+.app-tag {
+  @extend .cds--tag;
+}
+
+.app-tag--success {
+  @extend .cds--tag--green;
+}
+
+.app-tag--danger {
+  @extend .cds--tag--red;
+}
+
+.app-tag--progress {
+  @extend .cds--tag--blue;
+}
+
+.app-tag--warning {
+  @extend .cds--tag--magenta;
+}
+
+.app-tag--neutral {
+  @extend .cds--tag--gray;
+}
+
+// ---------------------------------------------------------------------------
+// Notifications
+// ---------------------------------------------------------------------------
+
+.app-notifications {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-03;
+  margin-bottom: $spacing-06;
+
+  .cds--inline-notification {
+    max-width: none;
+  }
+}
+
+.app-hint {
+  @include type.type-style('helper-text-01');
+
+  margin-top: $spacing-06;
+  padding-top: $spacing-05;
+  border-top: 1px solid $border-subtle-01;
+  color: $text-helper;
+}
+
+// ---------------------------------------------------------------------------
+// Error pages
+// ---------------------------------------------------------------------------
+
+.app-error {
+  padding: $spacing-10 0;
+  text-align: center;
+}
+
+.app-error__code {
+  @include type.type-style('label-01');
+
+  color: $text-secondary;
+}
+
+.app-error__title {
+  @include type.type-style('productive-heading-05');
+
+  margin: $spacing-03 0 $spacing-06;
+}
